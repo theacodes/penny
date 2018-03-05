@@ -6,14 +6,12 @@ import struct
 import serial
 
 
-INPUT = 0
-INPUT_PULLUP = 1
-OUTPUT = 2
-
-
 class Arduino:
     """Controls an Ardiuno daughterboard running Penny firmware via serial."""
     DEFAULT_BAUD_RATE = 9600
+    INPUT = 0
+    INPUT_PULLUP = 1
+    OUTPUT = 2
 
     def __init__(self, serial_port: str):
         self._serial = serial.Serial()
