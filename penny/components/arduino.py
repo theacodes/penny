@@ -48,8 +48,8 @@ class Arduino:
     def digital_write(self, pin: int, state: bool) -> None:
         self._send(b'W' + struct.pack('BB', pin, state))
 
-    def pin_mode(self, pin: int, mode: PinMode) -> None:
-        data = b'M' + struct.pack('BB', pin, int(mode))
+    def pin_mode(self, pin: int, mode: int) -> None:
+        data = b'M' + struct.pack('BB', pin, mode)
         self._send(data)
 
     def analog_write(self, pin: int, value: int) -> None:

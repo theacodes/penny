@@ -11,18 +11,18 @@ FORWARD = 0
 REVERSE = 1
 
 _PWMA = 3
-_PWMB = 4
+_PWMB = 11
 _DIRA = 2
 _DIRB = 4
 
 
 class Ardumoto:
-    def __init__(self, arduino: arduino.Arduino):
-        self._arduino = arduino
-        self._arduino.pin_mode(PWMA, arduino.PinMode.OUTPUT)
-        self._arduino.pin_mode(DIRA, arduino.PinMode.OUTPUT)
-        self._arduino.pin_mode(PWMB, arduino.PinMode.OUTPUT)
-        self._arduino.pin_mode(DIRB, arduino.PinMode.OUTPUT)
+    def __init__(self, arduino_: arduino.Arduino):
+        self._arduino = arduino_
+        self._arduino.pin_mode(_PWMA, arduino.OUTPUT)
+        self._arduino.pin_mode(_DIRA, arduino.OUTPUT)
+        self._arduino.pin_mode(_PWMB, arduino.OUTPUT)
+        self._arduino.pin_mode(_DIRB, arduino.OUTPUT)
 
     def drive(self, motor: int, speed: int, direction: int) -> None:
         pwm_pin = _PWMA if motor == A else _PWMB

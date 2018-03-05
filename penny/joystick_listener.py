@@ -13,7 +13,7 @@ import websockets
 
 class JoystickListener:
     def __init__(self):
-        self._joystick_state = {}
+        self.state = {}
         self._thread_loop = asyncio.new_event_loop()
         self._stop = asyncio.Future(loop=self._thread_loop)
         self._thread = None
@@ -33,7 +33,7 @@ class JoystickListener:
         while True:
             try:
                 recv_state = await websocket.recv()
-                self._joystick_state = json.loads(recv_state)
+                self.state = json.loads(recv_state)
             except websockets.ConnectionClosed:
                 print('disconnected')
                 break
@@ -47,17 +47,3 @@ class JoystickListener:
     def _thread_main(self):
         asyncio.set_event_loop(self._thread_loop)
         self._thread_loop.run_until_complete(self._serve_websockets())
-
-
-
-
-listener = JoystickListener()
-listener.start()
-
-try:
-    while True:
-        time.sleep(1)
-        print(listener._joystick_state)
-except KeyboardInterrupt:
-    listener.stop()
-
