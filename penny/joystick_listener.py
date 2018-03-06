@@ -10,40 +10,21 @@ import threading
 
 import websockets
 
+from penny import _websockets
 
-class JoystickListener:
+
+# TODO: Consider composition over inheritance.
+class JoystickListener(_websockets.BackgroundServer):
     def __init__(self):
-        self.state = {}
-        self._thread_loop = asyncio.new_event_loop()
-        self._stop = asyncio.Future(loop=self._thread_loop)
-        self._thread = None
+        super(JoystickListener, self).__init__(
+            self._callback, '0.0.0.0', 5678)
+        self.joysticks = {}
 
-    def start(self):
-        self._thread = threading.Thread(target=self._thread_main)
-        self._thread.daemon = True
-        self._thread.start()
-        
-    def stop(self):
-        self._thread_loop.call_soon_threadsafe(
-            functools.partial(self._stop.set_result, None))
-        self._thread.join()
-        self._thread = None
-
-    async def _websocket_listener(self, websocket, path):
+    async def _callback(self, websocket, path):
         while True:
             try:
-                recv_state = await websocket.recv()
-                self.state = json.loads(recv_state)
+                data = await websocket.recv()
+                self.joysticks = json.loads(data)
             except websockets.ConnectionClosed:
                 print('disconnected')
                 break
-
-    async def _serve_websockets(self):
-        serve = websockets.serve(
-            self._websocket_listener, '0.0.0.0', 5678)
-        async with serve:
-            await self._stop
-
-    def _thread_main(self):
-        asyncio.set_event_loop(self._thread_loop)
-        self._thread_loop.run_until_complete(self._serve_websockets())

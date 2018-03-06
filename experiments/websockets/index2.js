@@ -53,19 +53,25 @@
 
     gamepad_listener_socket.onerror = (e) => {
       if(send_data_interval) {
-        window.cancelInterval(send_data_interval);
+        window.clearInterval(send_data_interval);
       }
       ui_state.connection.connected = false;
     };
 
     gamepad_listener_socket.onclose = (e) => {
+      if(send_data_interval) {
+        window.clearInterval(send_data_interval);
+      }
+      ui_state.connection.connected = false;
       if(e.code == 1000) return;
       ui_state.connection.error = e.code + ': ' + e.reason;
     };
 
     gamepad_listener_socket.onopen = (e) => {
       ui_state.connection.connected = true;
-      send_data_interval = window.setInterval(sendGamepadDataToServer, 1000);
+      // send data at 30hz
+      send_data_interval = window.setInterval(
+        sendGamepadDataToServer, 1000 / 30);
     };
   }
 
@@ -80,7 +86,7 @@
     data: ui_state,
     methods: {
       connect: () => {
-        establishConnection('ws://echo.websocket.org');
+        establishConnection('ws://localhost:5678');
       }
     }
   });
