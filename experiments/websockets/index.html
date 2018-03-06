@@ -1,10 +1,65 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-    <head>
-        <title>WebSocket demo</title>
-    </head>
-    <body>
-        <h2 id="start">Press a button on your controller to start</h2>
-        <script type="text/javascript" src="index.js"></script>
-    </body>
+  <head>
+    <title>Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  </head>
+  <body>
+
+    <header>
+      <nav class="navbar navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">
+          Penny Dashboard
+        </a>
+      </nav>
+    </header>
+
+    <main id="app" class="container-fluid" style="margin-top: 1em;">
+
+      <div class="card-deck">
+
+        <!-- Connection status -->
+        <div class="card col-sm-4">
+          <div class="card-body">
+            <h5 class="card-title">Connection</h5>
+            <p class="card-text">Status: {{connection.connected ? 'Connected' : 'Not connected'}}</p>
+            <div v-if="connection.error" class="alert alert-danger" role="alert">
+              Error: {{connection.error}}
+            </div>
+            <button v-if="connection.connected != 'Connected'" v-on:click="connect" type="button" class="btn btn-primary">Connect</button>
+          </div>
+        </div>
+
+        <!-- Gamepad status -->
+        <div class="card col-sm-4" v-for="(gamepad, _, index) in gamepads">
+          <div class="card-body">
+            <h5 class="card-title">Controller {{index+1}}</h5>
+            <div v-for="(axis, index) in gamepad.axes">
+              <div class="progress">
+                <div class="progress-bar bg-success" v-bind:style="'width: ' + ((axis + 1.0) * 50) + '%'">Axis {{index}}</div>
+              </div>
+            </div>
+            <button type="button" class="btn btn-sm" v-for="(button, index) in gamepad.buttons" v-bind:class="{'btn-success': button, 'btn-secondary': !button}">
+              {{index}}
+            </button>
+          </div>
+        </div>
+
+        <!-- ? -->
+        <div class="card col-sm-4">
+          <div class="card-body">
+            <h5 class="card-title">Extra</h5>
+          </div>
+        </div>
+      </div>
+    </main>
+
+
+
+
+    <!--<script type="text/javascript" src="index.js"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script type="text/javascript" src="index2.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  </body>
 </html>
