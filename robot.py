@@ -1,7 +1,7 @@
 import math
 import time
 
-import penny.joystick_listener
+import penny.dashboard
 import penny.components.arduino
 import penny.components.ardumoto
 
@@ -14,8 +14,7 @@ def clamp(lower, upper, value):
 
 
 def main():
-    joystick = penny.joystick_listener.JoystickListener()
-    joystick.start()
+    dashboard = penny.Dashboard()
     arduino = penny.components.arduino.Arduino(ARDUINO_PORT)
     arduino.open()
     # TODO: Fix arduino so it sends a "ready" message.
@@ -29,10 +28,9 @@ def main():
 
     try:
         while True:
-            # TODO: Make the joystick interface less icky.
-            y_axis = joystick.joysticks.get('0').get('axis', {}).get('1', 0.0)
-            x_axis = joystick.joysticks.get('0').get('axis', {}).get('0', 0.0)
-            high_drive = joystick.joysticks.get('0').get('buttons', {}).get('0', False)
+            y_axis = dashboard.gamepad.axis_1
+            x_axis = dashboard.gamepad.axis_0
+            high_drive = dashboard.gamepad.button_0
 
             # Drop any input lower than a certain threshold,
             # essentially giving the joysticks a "deadzone".
@@ -67,11 +65,11 @@ def main():
 
     finally:
         # Cleanup and stop the motors.
-        joystick.stop()
         motors.stop(motors.B)
         motors.stop(motors.A)
         arduino.digital_write(ACTIVE_LIGHT_PIN, False)
         arduino.close()
+        dashboard.close()
 
 
 if __name__ == '__main__':

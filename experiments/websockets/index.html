@@ -33,7 +33,7 @@
         <!-- Gamepad status -->
         <div class="card col-sm-4" v-for="(gamepad, _, index) in gamepads">
           <div class="card-body">
-            <h5 class="card-title">Controller {{index+1}}</h5>
+            <h5 class="card-title">Gamepad {{index}}</h5>
             <div v-for="(axis, index) in gamepad.axes">
               <div class="progress">
                 <div class="progress-bar bg-success" v-bind:style="'width: ' + ((axis + 1.0) * 50) + '%'">Axis {{index}}</div>
