@@ -2,8 +2,8 @@ import math
 import time
 
 import penny.dashboard
-import penny.components.arduino
-import penny.components.ardumoto
+import penny.parts.arduino
+import penny.parts.ardumoto
 
 ARDUINO_PORT = '/dev/serial/by-id/usb-Arduino__www.arduino.cc__Arduino_Uno_75633313233351C09072-if00'
 ACTIVE_LIGHT_PIN = 10
@@ -15,7 +15,7 @@ def clamp(lower, upper, value):
 
 def main():
     dashboard = penny.Dashboard()
-    arduino = penny.components.arduino.Arduino(ARDUINO_PORT)
+    arduino = penny.parts.arduino.Arduino(ARDUINO_PORT)
     arduino.open()
     # TODO: Fix arduino so it sends a "ready" message.
     time.sleep(3)
@@ -24,7 +24,7 @@ def main():
     arduino.pin_mode(ACTIVE_LIGHT_PIN, arduino.OUTPUT)
     arduino.digital_write(ACTIVE_LIGHT_PIN, 1)
 
-    motors = penny.components.ardumoto.Ardumoto(arduino)
+    motors = penny.parts.ardumoto.Ardumoto(arduino)
 
     try:
         while True:

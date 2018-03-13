@@ -1,11 +1,6 @@
 #!/usr/bin/env python
 
 import asyncio
-import datetime
-import functools
-import json
-import random
-import time
 import threading
 
 import websockets
