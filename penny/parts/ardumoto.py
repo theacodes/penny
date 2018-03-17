@@ -16,7 +16,7 @@ class Ardumoto:
     FORWARD = 0
     REVERSE = 1
 
-    def __init__(self, arduino: penny.components.arduino.Arduino):
+    def __init__(self, arduino: penny.parts.arduino.Arduino):
         self._arduino = arduino
         self._arduino.pin_mode(_PWMA, arduino.OUTPUT)
         self._arduino.pin_mode(_DIRA, arduino.OUTPUT)

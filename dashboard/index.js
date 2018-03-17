@@ -2,7 +2,7 @@
 /* globals Vue */
 
 const hostname = window.location.hostname;
-const default_listener_url = 'ws://' + hostname + ':3456';
+const default_listener_url = 'ws://' + hostname + ':5678';
 
 // Websocket connection to the Penny joystick listener server.
 let gamepad_listener_socket;
@@ -86,7 +86,7 @@ let app = new Vue({
   data: ui_state,
   methods: {
     connect: () => {
-      establishConnection('ws://localhost:5678');
+      establishConnection(default_listener_url);
     }
   }
 });
